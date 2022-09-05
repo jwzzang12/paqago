@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Papago</title>
+    <link rel="shortcut icon" href="./images/common/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="./js/greensock/gsap.min.js"></script>
+  </head>
+  <body>
+    <main id="main">
+      <div id="translate">
+        <select name="language" id="language">
+          <option value="ko">한국어</option>
+          <option value="en">영어</option>
+          <option value="ja">일본어</option>
+          <option value="zh-CN">중국어 간체</option>
+          <option value="zh-TW">중국어 번체</option>
+        </select>
+        <textarea name="" id="txt" cols="30" rows="10" placeholder="번역할 내용을 입력하세요."></textarea>
+        <button id="btn">번역하기</button>
+      </div>
+      <div id="resultBox">
+        <select name="translated" id="translated">
+          <option value="en">영어</option>
+          <option value="ko">한국어</option>
+          <option value="ja">일본어</option>
+          <option value="zh-CN">중국어 간체</option>
+          <option value="zh-TW">중국어 번체</option>
+        </select>
+        <div id="result"></div>
+      </div>
+    </main>
+    <script>
+      let lang = "ko";
+      let selLang = "en";
+      $("#language").on("change", function () {
+        lang = $(this).val();
+      });
+      $("#translated").on("change", function () {
+        selLang = $(this).val();
+        $("#result span").empty();
+      });
+      const result = $("#result");
+      $("#btn").on("click", function () {
+        $.ajax({
+          url: "http://127.0.0.1:8099/papago",
+          method: "POST",
+          data: {
+            text: $("#txt").val(),
+            source: lang,
+            target: selLang,
+          },
+        }).done(function (response) {
+          const list = response.result.split("").map(function (item) {
+            return `<span>${item}</span>`;
+          });
+          const tempHtml = list.join("");
+          result.html(tempHtml);
+          gsap.from("#result span", { opacity: 0, stagger: { each: 0.01 } });
+        });
+      });
+    </script>
+  </body>
+</html>
