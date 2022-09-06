@@ -21,6 +21,7 @@
     <script src="./js/greensock/gsap.min.js"></script>
   </head>
   <body>
+    <!-- result text effect version -->
     <main id="main">
       <div id="translator" class="content">
         <select name="language" id="language" class="option">
@@ -41,7 +42,7 @@
           <option value="zh-CN">중국어 간체</option>
           <option value="zh-TW">중국어 번체</option>
         </select>
-        <textarea id="result" readonly></textarea>
+        <div id="result"></div>
         <button class="btn" id="btnCopy"><span class="material-icons"> content_copy </span></button>
       </div>
     </main>
@@ -71,12 +72,13 @@
           // });
           // const tempHtml = list.join("");
           result.html(response.result);
-          // gsap.from("#result span", { opacity: 0, stagger: { each: 0.01 } });
+          gsap.from("#result span", { opacity: 0, stagger: { each: 0.01 } });
         });
       });
       const resultText = $("#btnCopy").on("click", function () {
-        result.select();
-        document.execCommand("Copy");
+        const resultTxt = result.text();
+        console.log(resultTxt);
+        resultTxt.execCommand("Copy");
         alert("복사됨");
       });
     </script>
