@@ -20,10 +20,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.send("Hello Express");
-});
-app.post("/papago", (req, res) => {
+app.post("/", (req, res) => {
   const target = req.body.target;
   const text = req.body.text;
   const source = req.body.source;
