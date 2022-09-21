@@ -1,26 +1,24 @@
 const express = require("express");
 const morgan = require("morgan");
 const axios = require("axios");
-const cors = require("cors");
+// const cors = require("cors");
 const app = express();
 const dotenv = require("dotenv").config();
-app.all("/*", function (req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested, Content-Type, Accept Authorization");
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "POST, PUT, PATCH, GET, DELETE");
+    return res.status(200).json({});
+  }
   next();
 });
+
 app.set("port", process.env.PORT || 8099);
 //정해진 포트를 들고오거나 정해진 포트 환경이 없다면 8099를 들고옴
 const port = app.get("port");
-console.log(port); // expected output: 8099
 app.use(morgan()); //서버로 어떤 데이터가 흘러들어 오는지 디테일을 다 보고 싶을때
 // app.use(morgan("dev"));//개발 환경에서만 볼때
-
-const corsOptions = {
-  origin: "url",
-};
-
-app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
