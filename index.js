@@ -4,7 +4,11 @@ const axios = require("axios");
 const cors = require("cors");
 const app = express();
 const dotenv = require("dotenv").config();
-
+app.all("/*", function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 app.set("port", process.env.PORT || 8099);
 //정해진 포트를 들고오거나 정해진 포트 환경이 없다면 8099를 들고옴
 const port = app.get("port");
