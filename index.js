@@ -15,7 +15,12 @@ const port = app.get("port");
 console.log(port); // expected output: 8099
 app.use(morgan()); //서버로 어떤 데이터가 흘러들어 오는지 디테일을 다 보고 싶을때
 // app.use(morgan("dev"));//개발 환경에서만 볼때
-app.use(cors());
+
+const corsOptions = {
+  origin: "url",
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
