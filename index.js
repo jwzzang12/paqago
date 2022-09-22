@@ -4,20 +4,20 @@ const axios = require("axios");
 const cors = require("cors");
 const app = express();
 const dotenv = require("dotenv").config();
-app.use((req, res, next) => {
-  res.setHeader("Content-Type", "application/json");
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Content-Type", "application/json");
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+//   next();
+// });
 app.set("port", process.env.PORT || 8099);
 //정해진 포트를 들고오거나 정해진 포트 환경이 없다면 8099를 들고옴
 const port = app.get("port");
 app.use(morgan()); //서버로 어떤 데이터가 흘러들어 오는지 디테일을 다 보고 싶을때
 // app.use(morgan("dev"));//개발 환경에서만 볼때
 
-app.use(cors({ origin: "https://moonjiwon-paqago.netlify.app", credentials: true }));
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -41,6 +41,7 @@ app.post("/papago", (req, res) => {
   })
     .then((response) => {
       res.json({ result: response.data.message.result.translatedText });
+      console.log("normal");
     })
     .catch((error) => {
       console.log(error);
